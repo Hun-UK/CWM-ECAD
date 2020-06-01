@@ -40,6 +40,6 @@ module mux(
 	assign out = ba[sel];*/
 
 	//NOTE I have a fear of IF statements thanks to debacle in ex1 lol
-	always #5 out = sel ? b : a;
+	assign #5 out = sel ? b : a;
       
 endmodule
