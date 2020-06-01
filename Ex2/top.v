@@ -21,12 +21,25 @@
 `timescale 1ns / 100ps
 
 module mux(
-    //Todo: define inputs here
+    //Todo: define inputs here	
+	a, b, sel, out
     );
-    
+	input a, b, sel;
+	output  out;
+
+    	//reg [1:0] ba;
+
     //Todo: define registers and wires here
+	/*always begin
+		 ba <= {b,a};
+	end*/	
 
+    //Todo: define your logic here
+	/* How I want to do it. however no clock
+	assign ba = {b,a};
+	assign out = ba[sel];*/
 
-    //Todo: define your logic here                 
+	//NOTE I have a fear of IF statements thanks to debacle in ex1
+	assign out = sel ? b : a;
       
 endmodule
