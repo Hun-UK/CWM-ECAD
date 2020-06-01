@@ -15,9 +15,24 @@ module top_tb(
     
 //Todo: Parameters
 
+parameter CLK_PERIOD = 10;
+
 //Todo: Regitsers and wires
 
+reg clk;
+reg err;
+reg rst;
+reg dir;
+
+
 //Todo: Clock generation
+
+initial begin 
+	clk = 1'b0;
+	forever begin
+		#(CLK_PERIOD / 2) clk = ~clk;
+	end
+end
 
 //Todo: User logic
     
