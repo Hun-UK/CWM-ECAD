@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 // Exercise #2 
-// Student Name:
-// Date: 
+// Student Name: Ben Kaye
+// Date: 2020-06-01
 //
 //  Description: In this exercise, you need to design a multiplexer, where the  
 //  output acts according to the following truth table:
@@ -39,7 +39,7 @@ module mux(
 	assign ba = {b,a};
 	assign out = ba[sel];*/
 
-	//NOTE I have a fear of IF statements thanks to debacle in ex1
-	assign out = sel ? b : a;
+	//NOTE I have a fear of IF statements thanks to debacle in ex1 lol
+	always #5 out = sel ? b : a;
       
 endmodule
