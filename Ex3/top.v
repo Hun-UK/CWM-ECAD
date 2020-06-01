@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 // Exercise #3 
-// Student Name:
-// Date: 
+// Student Name: Ben Kaye
+// Date: 2020-06-01
 //
 //  Description: In this exercise, you need to design an up / down counter, where 
 //  if the rst=1, the counter should be set to zero. If enable=0, the value
@@ -25,37 +25,29 @@ module counter(
     );
 
 	input clk, rst, enable, direction;
-	output [7:0] counter_out;
+	output reg [7:0] counter_out;
 
   
     //Todo: add registers and wires, if needed
-
-	reg [7:0] counter;
 	
 	initial begin
-	counter = 8'h0;
+	counter_out = 8'h0;
 end
 
 
     //Todo: add user logic
 
-	always @( posedge clk ) begin
-		if enable begin
-			if dir begin
-				counter <= counter + 1;
+	always @( posedge clk or posedge rst ) begin
+		if (rst)
+			counter_out = 8'h0;
+		if (enable) begin
+			if (direction) 
+				counter_out <= counter_out + 1;
 			else
-				counter <= counter - 1;
-			end
+				counter_out <= counter_out - 1;
+			
 		end
+		
 	end
-
-	always @( posedge clk or posedge rst )
-		if rst begin
-			counter = 8'h0;
-		end
-	end
-
-	assign counter_out = counter;
-
-      
+		      
 endmodule
