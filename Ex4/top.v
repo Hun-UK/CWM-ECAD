@@ -18,7 +18,7 @@
 
 `timescale 1ns / 100ps
 
-module roll(clk, rst, button, throw)
+module roll(clk, rst, button, throw);
 	input clk, rst, button;
 	output reg [2:0] throw;
 	
@@ -30,7 +30,10 @@ module roll(clk, rst, button, throw)
 			throw = 3'd0;
 		else
 			if (button || &(~throw) || &throw)
-				throw <= throw + 1;
+				if (throw == 3'b101 || throw == 3'b111)
+					throw <= 3'b001;
+				else
+					throw <= throw + 1;
 		
 	
 endmodule
