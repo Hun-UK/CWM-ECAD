@@ -21,7 +21,9 @@ module test();
 		button = 1;
 		reset = 0;
 		sel = 0;
-		forever (#CLK_PRD / 2) clk = ~clk;
+		forever #(CLK_PRD / 2) clk = ~clk;
+
+		#50 $finish;
 	end
 
 	// DO SOME TEST

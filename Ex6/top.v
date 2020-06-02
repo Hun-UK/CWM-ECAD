@@ -36,8 +36,8 @@ module mplex( rst, clk, button, sel, result);
 		.throw(throw_out)
 	);
 
-	traffic light(
-		.clk(clk)
+	light traffic(
+		.clk(clk),
 		.red(tl_out[2]),
 		.amber(tl_out[1]),
 		.green(tl_out[0])		
