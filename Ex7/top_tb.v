@@ -17,6 +17,14 @@ module test();
 
 	wire [4:0] result;
 
+	initial begin
+		clk <= 0;
+		read <= 0;
+		a <= 3'd3;
+		b <= 3'd7;
+		forever #(CLK_PRD/2) clk = ~clk;
+	end
+
 	mplier multiply(
 		.a(a),
 		.b(b),
