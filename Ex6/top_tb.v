@@ -23,7 +23,10 @@ module test();
 		sel <= 0;
 		 #(0.5) reset = 0;
 		forever #(CLK_PRD / 2) clk = ~clk;
-        #25 sel = 1;
+	end
+	
+	initial begin
+	#25 sel = 1;
 		#50 $finish;
 	end
 

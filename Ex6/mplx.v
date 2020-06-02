@@ -25,21 +25,9 @@ module mux(
 	a, b, sel, out
     );
 	input a, b, sel;
-	output  out;
+	output reg out;
 
-    	//reg [1:0] ba;
-
-    //Todo: define registers and wires here
-	/*always begin
-		 ba <= {b,a};
-	end*/	
-
-    //Todo: define your logic here
-	/* How I want to do it. however no clock
-	assign ba = {b,a};
-	assign out = ba[sel];*/
-
-	//NOTE I have a fear of IF statements thanks to debacle in ex1 lol
-	assign #5 out = sel ? b : a;
+	always @(a or b or sel)
+	   #5 out = sel ? b : a;
       
 endmodule

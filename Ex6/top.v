@@ -45,13 +45,26 @@ module mplex( rst, clk, button, sel, result);
 	);
 
 
-	mux multiplex(
-		.a(throw_out),
-		.b(tl_out),
+	mux multiplexA(
+		.a(throw_out[2]),
+		.b(tl_out[2]),
 		.sel(sel),
-		.out(result)		
+		.out(result[2])		
 	);
-
+    
+    mux multiplexB(
+		.a(throw_out[1]),
+		.b(tl_out[1]),
+		.sel(sel),
+		.out(result[1])		
+	);
+	
+	mux multiplexC(
+		.a(throw_out[0]),
+		.b(tl_out[0]),
+		.sel(sel),
+		.out(result[0])		
+	);
 	
 endmodule
 

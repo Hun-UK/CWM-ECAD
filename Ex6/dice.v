@@ -27,10 +27,10 @@ module roll(clk, rst, button, throw);
 			throw = 3'd0;
 		else
 			if (button || &(~throw) || &throw)
-				if (throw == 3'b101 || throw == 3'b111)
-					throw <= 3'b001;
+				if (throw == 3'b110 || throw == 3'b111)
+					throw = 3'b001;
 				else
-					throw <= throw + 1;
+					throw = throw + 1;
 		
 	
 endmodule
