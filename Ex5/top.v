@@ -15,9 +15,11 @@
 
 `timescale 1ns / 100ps
 
-module light(clk, red, amber, green)
+module light(clk, red, amber, green);
 	input clk;
-	output red, amber, green;
+	output reg red, amber, green;
+
+	initial {red, amber, green} = 3'b100;
 
 	always @ (posedge clk) begin
 		//Using karnaugh map of state transition
