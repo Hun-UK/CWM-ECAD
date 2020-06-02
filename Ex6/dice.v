@@ -22,9 +22,6 @@ module roll(clk, rst, button, throw);
 	input clk, rst, button;
 	output reg [2:0] throw;
 	
-	initial
-		throw = 3'd0;
-	
 	always @ ( posedge clk or rst )
 		if (rst) 
 			throw = 3'd0;
