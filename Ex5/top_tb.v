@@ -14,13 +14,16 @@ module test();
 	
 	parameter CLOCK_PRD = 10;
 	
-	reg clk, err;
+	reg clk, err,rst;
 
-	wire red, amber, green;	
+	wire red, amber, green;
 
 	initial begin
-		clk = 0;
-		err = 0;
+		clk <= 0;
+		err <= 0;	
+		rst <= 1;
+		#(0.5) rst = 0;
+
 		forever begin 
 			if (!(({red, amber, green} == 3'b100) ||
 				({red, amber, green} == 3'b110) ||
@@ -40,10 +43,12 @@ module test();
 				$display("##SUCCESS##");
 			$finish;
 		end
+	end
 
 
 	light traffic(
 	.clk(clk),
+	.rst(rst),
 	.red(red),
 	.amber(amber),
 	.green(green)

@@ -15,17 +15,23 @@
 
 `timescale 1ns / 100ps
 
-module light(clk, red, amber, green);
-	input clk;
+module light(clk, rst, red, amber, green);
+	input clk, rst;
 	output reg red, amber, green;
 
-	initial {red, amber, green} = 3'b100;
+	//initial {red, amber, green} = 3'b100; IS IT ALLOWED TO INITIALISE??
 
-	always @ (posedge clk) begin
-		//Using karnaugh map of state transition
-		red <= (amber && green) || (!red && amber);
-		amber <= (red && !amber);
-		green <= (red && amber);			
+	always @ (posedge clk or posedge rst) begin
+		if (rst) begin
+			red <= 1;
+			amber <= 0;
+			green <= 0;
+		end else begin
+			//Using karnaugh map of state transition
+			red <= (red && !amber && !green) || (!red && amber && !green);
+			amber <= !amber;
+			green <= (red && amber);
+		end			
 		
 	end
 endmodule
