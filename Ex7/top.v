@@ -15,10 +15,24 @@
 
 `timescale 1ns / 100ps
 
-module mplier(clk, a, b, read, result);
+module mplier( clk, a, b, read, result );
 
-	input clk, read, [2:0]a, [2:0]b;
-	output [4:0] result;
+	input clk, read;
+	input [2:0] a, b;
+	output [5:0] result;
+	
+	reg addr;
+	
+	always @(a or b) addr = a*8 + b;
+	
+	
+	multiplier_mem(
+	.clka(clk),
+	.ena(read),
+	.addra(addr),
+	.douta(result)
+	);
+	
 	
 endmodule
 

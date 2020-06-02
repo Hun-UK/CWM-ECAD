@@ -13,7 +13,8 @@ module test();
 
 	parameter CLK_PRD = 10;
 
-	reg [2:0] a, [2:0] b, clk, read;
+	reg [2:0] a, b;
+	reg clk, read;
 
 	wire [4:0] result;
 
@@ -25,6 +26,14 @@ module test();
 		forever #(CLK_PRD/2) clk = ~clk;
 	end
 
+    initial begin
+        
+        #10 begin 
+            read = 1;
+            read = 0;
+        end
+    end
+    
 	mplier multiply(
 		.a(a),
 		.b(b),

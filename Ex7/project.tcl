@@ -24,6 +24,10 @@ create_fileset -constrset -quiet constraints
 read_verilog "top.v"
 read_verilog "top_tb.v"
 
+create_ip -name multiplier_mem -vendor xilinx.com -library UserIP -module_name blk_mem_gen:8.4
+set_property generate_synth_checkpoint false [get_files multiplier_mem.xci]
+reset_target all [get_ips multiplier_mem]
+
 update_compile_order -fileset sources_1
 update_compile_order -fileset sim_1
 
