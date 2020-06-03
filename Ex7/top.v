@@ -27,7 +27,7 @@ module mplier( clk, a, b, read, result );
 	always @(a or b) addr = (a << 3) + b;
 	
 	
-	multiplier_memory(
+	multiplier_memory mem(
 	.clka(clk),
 	.ena(read),
 	.addra(addr),

@@ -12,13 +12,14 @@
 module test();
 
 	parameter CLK_PRD = 10;
-
+	
 	reg [2:0] a, b;
-	reg clk, read;
+	reg clk, read, err;
 
 	wire [4:0] result;
 
 	initial begin
+		err <= 0;
 		clk <= 0;
 		read <= 0;
 		a <= 3'd3;
@@ -28,10 +29,22 @@ module test();
 
     initial begin
         
-        #10 begin 
+        #10 @(posedge clk) begin
             read = 1;
-            read = 0;
+            #(2*CLK_PRD) read = 0;
         end
+	
+	#15 if (result != 5'd21) begin
+		err = 1;
+		$display("Value retrieved from memory incorrect");
+	end
+
+	
+	#30 begin 
+		if (err) $display("Error encountered.");
+		else $display("No error detected.");
+		$finish; 
+	end
     end
     
 	mplier multiply(
