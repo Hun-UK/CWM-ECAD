@@ -23,7 +23,8 @@ module mplier( clk, a, b, read, result );
 	
 	reg [5:0] addr;
 	
-	always @(a or b) addr = a*8 + b;
+	// LSR by 3, then add b (equiv of a*8)
+	always @(a or b) addr = (a << 3) + b;
 	
 	
 	multiplier_memory(
