@@ -21,12 +21,12 @@ module mplier( clk, a, b, read, result );
 	input [2:0] a, b;
 	output [5:0] result;
 	
-	reg addr;
+	reg [5:0] addr;
 	
 	always @(a or b) addr = a*8 + b;
 	
 	
-	multiplier_mem(
+	multiplier_memory(
 	.clka(clk),
 	.ena(read),
 	.addra(addr),

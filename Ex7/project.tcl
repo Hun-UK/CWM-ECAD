@@ -21,12 +21,14 @@ create_fileset -constrset -quiet constraints
 
 #Todo: Add your IP here
 
+create_ip -name blk_mem_gen -vendor xilinx.com -library ip -version 8.4 -module_name multiplier_memory set_property -dict [list CONFIG.Component_Name {multiplier_memory} CONFIG.Memory_Type {Single_Port_ROM} CONFIG.Write_Width_A {6} CONFIG.Write_Depth_A {64} CONFIG.Read_Width_A {6} CONFIG.Write_Width_B {6} CONFIG.Read_Width_B {6} CONFIG.Load_Init_File {true} CONFIG.Coe_File {/home/centos/CWM-ECAD/Ex7/mem_init.coe} CONFIG.Port_A_Write_Rate {0}] [get_ips multiplier_memory]
+set_property generate_synth_checkpoint false [get_files multiplier_memory.xci]
+reset_target all [get_ips multiplier_memory]
+
 read_verilog "top.v"
 read_verilog "top_tb.v"
 
-create_ip -name blk_mem_gen -vendor xilinx.com -library ip -version 8.4 -module_name multiplier_memory set_property -dict [list CONFIG.Component_Name {multiplier_memory} CONFIG.Memory_Type {Single_Port_ROM} CONFIG.Write_Width_A {6} CONFIG.Write_Depth_A {64} CONFIG.Read_Width_A {6} CONFIG.Write_Width_B {6} CONFIG.Read_Width_B {6} CONFIG.Load_Init_File {true} CONFIG.Coe_File {/home/centos/CWM-ECAD/Ex7/mem_init.coe} CONFIG.Port_A_Write_Rate {0}] [get_ips multiplier_memory]
-set_property generate_synth_checkpoint false [get_files multiplier_mem.xci]
-reset_target all [get_ips multiplier_mem]
+
 
 
 update_compile_order -fileset sources_1
