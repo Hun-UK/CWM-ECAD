@@ -22,6 +22,7 @@ create_fileset -constrset -quiet constraints
 #Todo: Add your IP here
 
 create_ip -name blk_mem_gen -vendor xilinx.com -library ip -version 8.4 -module_name multiplier_memory
+
 set_property CONFIG.Component_Name {multiplier_memory} [get_ips multiplier_memory]
 set_property CONFIG.Memory_Type {Single_Port_ROM} [get_ips multiplier_memory]
 set_property CONFIG.Write_Width_A {6} [get_ips multiplier_memory]
@@ -32,7 +33,7 @@ set_property CONFIG.Read_Width_B {6} [get_ips multiplier_memory]
 set_property CONFIG.Write_Width_B {6} [get_ips multiplier_memory]
 set_property CONFIG.Load_Init_File {true} [get_ips multiplier_memory]
 #set_property CONFIG.Coe_File {/home/centos/CWM-ECAD/Ex7/mem_init.coe} [get_ips multiplier_memory] #THROWING ERROR
-set_property CONFIG.Coe_File {mem_init.coe} [get_ips multiplier_memory] #err err err
+set_property CONFIG.Coe_File {././mem_init.coe} [get_ips multiplier_memory] #err err err
 
 set_property generate_synth_checkpoint {false} [get_files multiplier_memory.xci]
 reset_target all [get_ips multiplier_memory]
