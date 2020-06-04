@@ -22,20 +22,26 @@ module axi_multiplier(clk, rst, a, b, read, result);
 	output reg [5:0] result;
 	
 	reg [31:0] addr;
-	reg master_ready;
+	reg master_ready, addr_stable;
 	wire [31:0] full_result;
-	wire data_available, slave_ready, addr_stable;
+	wire data_available, slave_ready;
 
 	//addr_stable = assert property(posedge clk) $stable(a));
 
 	always @(posedge read) begin
-		addr <= a << 3 + b;
-		/*@(posedge addr_stable)*/ #1 begin
-			master_ready = 1; 
-			if (data_available && slave_ready) begin
-				result <= full_result[5:0];
-				#1 master_ready <= 0;
-			end
+	    @ (posedge slave_ready) begin
+            addr = (a << 3) + b;
+            @ (addr) begin
+                addr_stable <= 1;
+                master_ready <= 1; 
+                if (data_available && slave_ready) begin
+                    result <= full_result[5:0];
+                    #1 begin
+                        master_ready <= 0; 
+                        addr_stable <= 0; 
+                    end
+                end
+            end
 		end
 	end
 
@@ -45,7 +51,7 @@ module axi_multiplier(clk, rst, a, b, read, result);
 	  .rsta_busy(),          // output wire rsta_busy
 	  .rstb_busy(),          // output wire rstb_busy
 	  .s_aclk(clk),                // input wire s_aclk
-	  .s_aresetn(rst),          // input wire s_aresetn
+	  .s_aresetn(1'd1),          // input wire s_aresetn
 	  .s_axi_awaddr(32'd0),    // input wire [31 : 0] s_axi_awaddr
 	  .s_axi_awvalid(1'd0),  // input wire s_axi_awvalid
 	  .s_axi_awready(),  // output wire s_axi_awready

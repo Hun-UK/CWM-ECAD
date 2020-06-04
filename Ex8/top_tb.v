@@ -19,7 +19,7 @@ module test();
 	wire [5:0] rslt; 
 
 	initial begin
-		rst <= 0;
+		rst <= 1;
 		err <= 0;
 		clk <= 0;
 		read <= 0;
@@ -52,7 +52,7 @@ module test();
 		.a(a),
 		.b(b),
 		.clk(clk),
-		.rst(1'd0),
+		.rst(1'd1),
 		.read(read),
 		.result(result)
 	);
