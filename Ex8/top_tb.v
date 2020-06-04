@@ -48,10 +48,11 @@ module test();
 		end
 	end
     
-	mplier multiply(
+	axi_multiplier mplier(
 		.a(a),
 		.b(b),
 		.clk(clk),
+		.rst(1'd0),
 		.read(read),
 		.result(result)
 	);
