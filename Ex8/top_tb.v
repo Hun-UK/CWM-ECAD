@@ -19,24 +19,40 @@ module test();
 	wire [5:0] rslt; 
 
 	initial begin
-		clk = 0;
-		rst = 0;
-		read = 0;
-		err = 0;
-		
+		rst <= 0;
+		err <= 0;
+		clk <= 0;
+		read <= 0;
+		a <= 3'd3;
+		b <= 3'd7;
 		forever #(CLK_PRD/2) clk = ~clk;
 	end
 
 	initial begin
-		#30 $finish();
-	end
 
-	axi_multiplier mplier(
-		.clk(clk),
-		.rst(rst),
-		.read(read),
+		#10 @(posedge clk) begin
+		    read = 1;
+		    #(2*CLK_PRD) read = 0;
+		end
+
+		#15 if (result != 5'd21) begin
+			err = 1;
+			$display("Value retrieved from memory incorrect");
+		end
+
+
+		#30 begin 
+			if (err) $display("Error encountered.");
+			else $display("No error detected.");
+			$finish; 
+		end
+	end
+    
+	mplier multiply(
 		.a(a),
 		.b(b),
-		.result(rslt)		
+		.clk(clk),
+		.read(read),
+		.result(result)
 	);
 endmodule
