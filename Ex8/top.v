@@ -49,8 +49,8 @@ module axi_multiplier(clk, rst, a, b, read, result);
 
 	//Only connect wires we care about for single port ROM. IE ignore B and ignore write.
 	dp_multiplier_mem dp_ram (
-	  .rsta_busy(),          // output wire rsta_busy
-	  .rstb_busy(),          // output wire rstb_busy
+	  .rsta_busy(a_busy),          // output wire rsta_busy
+	  .rstb_busy(b_busy),          // output wire rstb_busy
 	  .s_aclk(clk),                // input wire s_aclk
 	  .s_aresetn(~rst),          // input wire s_aresetn
 	  .s_axi_awaddr(32'd0),    // input wire [31 : 0] s_axi_awaddr
