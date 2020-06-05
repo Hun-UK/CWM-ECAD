@@ -45,7 +45,7 @@ module top(rst_n, clk_n, clk_p, button, led_0, led_1, led_2);
 		if (~rst_n) begin
 			d0 <= 4'd1;
 			d1 <= 3'd1;
-			d2 <= 2'd1;
+			d2 <= 1;
 			count <= 0;
 		end else begin
 			if (&count) begin
