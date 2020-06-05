@@ -47,7 +47,7 @@ module axi_multiplier(clk, rst, a, b, read, result);
 				master_ready <= 1; 
 				@(posedge data_available) begin
 				    result <= full_result[5:0];
-				    master_ready <= 0;
+				    @(posedge clk) master_ready <= 0;
 				end
 				/*if (data_available) begin
 					result <= full_result[5:0];
