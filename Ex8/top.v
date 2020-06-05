@@ -60,7 +60,7 @@ module axi_multiplier(clk, rst, a, b, read, result);
 			
 			if (d==2) master_ready <=  (data_available) ? 0 : master_ready;
 			
-			// NOT SYNCHRONOUS BC OF +1
+			// NOT SYNCHRONOUS BC OF #1
 			d = (d + 1) % 3;
 
 		end   
