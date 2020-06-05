@@ -44,16 +44,12 @@ module axi_multiplier(clk, rst, a, b, read, result);
 
 			addr_stable <= 0;
 			addr <= {24'd0, a, b, 2'd0};
-			#1 addr_stable <= 1; //SURELY NOT ROBUST
+			#1 addr_stable <= 1;
 
 			@(posedge clk) master_ready <= 1; 
 			addr_stable <= 0;
 
-			//if (data_available) result = full_result[5:0]; //STILL RISING ON CLK EDGE
-			//result <= full_result[5:0]; ALSO  DOESN'T WORK
-			//if (!data_available) @(posedge data_available);
-
-			#1 result <= (data_available) ? full_result[5:0] : result; //SURELY THIS IS NOT ROBUST
+			#1 result <= (data_available) ? full_result[5:0] : result;
 
 			@(posedge clk) master_ready <=  (data_available) ? 0 : master_ready;
 
