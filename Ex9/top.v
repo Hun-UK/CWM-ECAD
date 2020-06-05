@@ -49,11 +49,10 @@ module top(rst_n, clk_n, clk_p, button, led_0, led_1, led_2);
 			count <= 0;
 		end else begin
 			if (&count) begin
-				d0[3:2] <= d0[2:1];
-				d0[2:1] <= d0[1:0];
+				d0 <= d0 << 1;
 				d0[0] <= d0[3];	
 
-				d1[2:1] <= d1[1:0];
+				d1 <= d1 << 1;
 				d1[0] <= d1[2];
 				
 				d2 <= ~d2;
