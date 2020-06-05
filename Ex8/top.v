@@ -29,39 +29,29 @@ module axi_multiplier(clk, rst, a, b, read, result);
 	//addr_stable = assert property(posedge clk) $stable(a));
 	
 	initial begin
-	   master_ready <= 1;
-	   addr_stable <= 1;
-	   addr <= 0;
-	   #4 begin
-	       master_ready <= 0;
-	       addr_stable <= 0;
-	   end
+		master_ready <= 1;
+		addr_stable <= 1;
+		addr <= 0;
+		#4 begin
+			master_ready <= 0;
+			addr_stable <= 0;
+		end
 	end
 
 	always @(posedge read) begin
-		if (slave_ready) begin
-		    addr_stable <= 0;
-			addr <= {26'd0, a, b};
+		if (!slave_ready) @ (posedge slave_ready);
+			addr_stable <= 0;
+        		addr <= {26'd0, a, b};
 			#1 addr_stable <= 1;
 			@(posedge clk) begin
 				master_ready <= 1; 
+				addr_stable <= 0;
 				@(posedge data_available) begin
-				    result <= full_result[5:0];
-				    @(posedge clk) master_ready <= 0;
-				end
-				/*if (data_available) begin
 					result <= full_result[5:0];
-					#1 begin
-					    master_ready <= 0; 
-					end
-				end else $display("Data retrieval failed");*/
-				
-			end
-			
-			
-			
-			
-			@(posedge clk) master_ready <= 0;
+				    	@(posedge clk) master_ready <= 0;
+				end
+					
+                    	end
 		end
 	end
 

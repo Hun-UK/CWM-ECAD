@@ -28,14 +28,30 @@ module test();
 		forever #(CLK_PRD/2) clk = ~clk;
 	end
 
+    initial begin
+        #20;
+        forever #10 begin
+            a <= {$random} % 8;
+            b <= {$random} % 8;
+            @(posedge clk) read <= 1;
+            @(posedge clk) read <= 0;
+            @(posedge clk) if (rslt != (a*b)) begin
+                err = 1;
+                $display("Value retrieved from memory incorrect");
+			end
+                
+        end
+    end
+    
 	initial begin
         #12 rst = 1;
         #16 rst = 0;
         
+        /*
 		#20 @(posedge clk) begin
 		    read = 1;
 		    #(2*CLK_PRD) read = 0;
-		end
+		end */
 
 		#15 if (result != 5'd21) begin
 			err = 1;
