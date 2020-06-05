@@ -43,24 +43,23 @@ module axi_multiplier(clk, rst, a, b, read, result);
 		end else #1 if (read) begin
 			if (d==0) begin
 
-			if (!slave_ready) @ (posedge slave_ready);
+				if (!slave_ready) @ (posedge slave_ready);
 
-			addr_stable <= 0;
-			addr <= {24'd0, a, b, 2'd0};
-			#1 addr_stable <= 1;
+				addr_stable <= 0;
+				addr <= {24'd0, a, b, 2'd0};
+				#1 addr_stable <= 1;
 			
 			end
 
 			if (d==1) begin
-			master_ready <= 1; 
-			addr_stable <= 0;
+				master_ready <= 1; 
+				addr_stable <= 0;
 
-			#1 result <= (data_available) ? full_result[5:0] : result;
+				#1 result <= (data_available) ? full_result[5:0] : result;
 			end
 			
-			if (d==2) begin
-			master_ready <=  (data_available) ? 0 : master_ready;
-			end
+			if (d==2) master_ready <=  (data_available) ? 0 : master_ready;
+			
 
 		end   
 
