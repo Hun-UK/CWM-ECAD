@@ -16,6 +16,22 @@ set_property BITSTREAM.CONFIG.SPI_FALL_EDGE YES        [current_design]
 
 #############################################################################################################
 
+set_property PACKAGE_PIN AY38 [get_ports {clk_n}]
+set_property IOSTANDARD DIFF_SSTL12 [get_ports {clk_n}]
+set_property PACKAGE_PIN AY37 [get_ports {clk_p}]
+set_property IOSTANDARD DIFF_SSTL12 [get_ports {clk_p}]
+create_clock -name clk -period 10 [get_ports {clk_p}]
+set_property PACKAGE_PIN BD21 [get_ports {rst_n}]
+set_property IOSTANDARD LVCMOS18 [get_ports {rst_n}]
+set_property PULLUP true [get_ports {rst_n}]
+set_property PACKAGE_PIN BC21 [get_ports {led_0}]
+set_property IOSTANDARD LVCMOS18 [get_ports {led_0}]
+set_property PACKAGE_PIN BB21 [get_ports {led_1}]
+set_property IOSTANDARD LVCMOS18 [get_ports {led_1}]
+set_property PACKAGE_PIN BA20 [get_ports {led_2}]
+set_property IOSTANDARD LVCMOS18 [get_ports {led_2}]
+set_property PACKAGE_PIN AL20 [get_ports {button}]
+set_property IOSTANDARD LVCMOS18 [get_ports {button}]
 
 
 
