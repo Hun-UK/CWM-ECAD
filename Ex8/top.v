@@ -40,19 +40,18 @@ module axi_multiplier(clk, rst, a, b, read, result);
 
 	always @(posedge read) begin
 		if (!slave_ready) @ (posedge slave_ready);
+		addr_stable <= 0;
+		addr <= {26'd0, a, b};
+		#1 addr_stable <= 1;
+		@(posedge clk) begin
+			master_ready <= 1; 
 			addr_stable <= 0;
-        		addr <= {26'd0, a, b};
-			#1 addr_stable <= 1;
-			@(posedge clk) begin
-				master_ready <= 1; 
-				addr_stable <= 0;
-				@(posedge data_available) begin
-					result <= full_result[5:0];
-				    	@(posedge clk) master_ready <= 0;
-				end
-					
-                    	end
-		end
+			@(posedge data_available) begin
+				result <= full_result[5:0];
+			    	@(posedge clk) master_ready <= 0;
+			end
+				
+            	end
 	end
 
 
