@@ -45,18 +45,6 @@ module test();
     end
     
 	initial begin
-        /*
-		#20 @(posedge clk) begin
-		    read = 1;
-		    #(2*CLK_PRD) read = 0;
-		end */
-
-		#15 if (result != 5'd21) begin
-			err = 1;
-			$display("Value retrieved from memory incorrect");
-		end
-
-
 		#400 begin 
 			if (err) $display("Error encountered.");
 			else $display("No error detected.");

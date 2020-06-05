@@ -36,26 +36,28 @@ module axi_multiplier(clk, rst, a, b, read, result);
 	       addr_stable <= 0;
 	       addr <= 0;
 	       result <= 0;
-	    end else if (read) begin
+	       
+	       //DELAY NEEDED FOR READ TO BE VALID ON CLOCK
+	    end else #1 if (read) begin
 	    
 	    
 	    
 		if (!slave_ready) @ (posedge slave_ready);
+		
+		//WHY DOES THIS WAIT A CLOCK CYCLE
 		addr_stable <= 0;
 		addr <= {24'd0, a, b, 2'd0};
 		#1 addr_stable <= 1; //SURELY NOT ROBUST
 		
-		@(posedge clk) begin
-		
-            master_ready <= 1; 
+		@(posedge clk) master_ready <= 1; 
             addr_stable <= 0;
 
         //if (data_available) result = full_result[5:0]; //STILL RISING ON CLK EDGE
         //result <= full_result[5:0]; ALSO  DOESN'T WORK
         //if (!data_available) @(posedge data_available);
             
-            result <= #1 (data_available) ? full_result[5:0] : result; //SURELY THIS IS NOT ROBUST
-        end
+            #1 result <= (data_available) ? full_result[5:0] : result; //SURELY THIS IS NOT ROBUST
+        
         @(posedge clk) master_ready <=  (data_available) ? 0 : master_ready;
         /*@(posedge data_available) begin //TRIGGERS NEXT READ CYCLE
             result <= full_result[5:0];
