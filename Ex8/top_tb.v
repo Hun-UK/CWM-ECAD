@@ -14,8 +14,8 @@ module test();
 	//MAY NEED TO MOD
 	parameter CLK_PRD = 4;
 	
-	reg clk, rst, read, err;
-	reg [2:0] a, b;
+	reg clk, rst, read, err, t;
+	reg [2:0] a, b, d;
 	wire [5:0] result; 
 
 	initial begin
@@ -23,25 +23,27 @@ module test();
 		err <= 0;
 		clk <= 0;
 		read <= 0;
+		err <= 0;
 		a <= 3'd3;
 		b <= 3'd7;
+		d <= 3'd3;
 		forever #(CLK_PRD/2) clk = ~clk;
 	end
 
-    initial begin
-        @(posedge clk) rst <= 1;
-        @(posedge clk) rst <= 0;
-        forever #10 begin
-            a <= {$random} % 8;
-            b <= {$random} % 8;
-            @(posedge clk) read <= 1;
-            @(posedge clk) read <= 0;
-            @(posedge clk) if (result != (a*b)) begin
-                err = 1;
-                $display("Value retrieved from memory incorrect");
-			end
-                
-        end
+    always  @(posedge clk) begin
+            
+            err <= (result != a*b && d==3'd3)  ? 1 : err;
+            
+            a <= (d==3'd3) ? {$random} % 8 : a;
+            b <= (d==3'd3) ? {$random} % 8 : b;
+            read <= d[1];
+            
+            
+		
+            d[2:1]<=d[1:0];
+            d[0] <= d[2];
+            
+        
     end
     
 	initial begin

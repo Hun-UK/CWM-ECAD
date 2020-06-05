@@ -22,10 +22,9 @@ module axi_multiplier(clk, rst, a, b, read, result);
 	output reg [5:0] result;
 	
 	reg [31:0] addr;
-	reg [2:0] d;
 	reg master_ready, addr_stable;
 	wire [31:0] full_result;
-	wire data_available, slave_ready;
+	wire data_available, slave_ready, a_busy, b_busy;
 
 	//addr_stable = assert property(posedge clk) $stable(a));
 	
@@ -37,35 +36,13 @@ module axi_multiplier(clk, rst, a, b, read, result);
 			addr_stable <= 0;
 			addr <= 0;
 			result <= 0;
-			d <= 3'd0;
-
-		//DELAY NEEDED FOR READ TO BE VALID ON CLOCK
-		end else #1 if (read) begin
-			if (d==0) begin
-
-				if (!slave_ready) @ (posedge slave_ready);
-
-				addr_stable <= 0;
-				addr <= {24'd0, a, b, 2'd0};
-				#1 addr_stable <= 1;
-			
-			end
-
-			if (d==1) begin
-				master_ready <= 1; 
-				addr_stable <= 0;
-
-				#1 result <= (data_available) ? full_result[5:0] : result;
-			end
-			
-			if (d==2) master_ready <=  (data_available) ? 0 : master_ready;
-			
-			// NOT SYNCHRONOUS BC OF #1
-			d = (d + 1) % 3;
-
-		end   
 
 		
+		end else begin
+			addr_stable <= #1 read && ~a_busy && ~b_busy && slave_ready;
+			addr <= {24'd0, a, b, 2'd0};
+			result <= #1 (data_available) ? full_result[5:0] : result;
+		end		
 	end
 
 
@@ -91,6 +68,6 @@ module axi_multiplier(clk, rst, a, b, read, result);
 	  .s_axi_rdata(full_result),      // output wire [31 : 0] s_axi_rdata
 	  .s_axi_rresp(),      // output wire [1 : 0] s_axi_rresp don't care
 	  .s_axi_rvalid(data_available),    // output wire s_axi_rvalid
-	  .s_axi_rready(master_ready)    // input wire s_axi_rready
+	  .s_axi_rready(1'd1)    // input wire s_axi_rready // master_ready
 	);
 endmodule
