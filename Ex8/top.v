@@ -51,7 +51,8 @@ module axi_multiplier(clk, rst, a, b, read, result);
 
 			//if (data_available) result = full_result[5:0]; //STILL RISING ON CLK EDGE
 			//result <= full_result[5:0]; ALSO  DOESN'T WORK
-			#1 if (data_available) result = full_result[5:0]; //SURELY THIS IS NOT ROBUST
+			if (!data_available) @(posedge data_available);
+			result <= full_result[5:0]; //SURELY THIS IS NOT ROBUST
 			@(posedge clk) master_ready <= 0;
 			/*@(posedge data_available) begin //TRIGGERS NEXT READ CYCLE
 				result <= full_result[5:0];
