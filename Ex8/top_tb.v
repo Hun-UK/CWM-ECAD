@@ -19,7 +19,7 @@ module test();
 	wire [5:0] rslt; 
 
 	initial begin
-		rst <= 1;
+		rst <= 0;
 		err <= 0;
 		clk <= 0;
 		read <= 0;
@@ -29,8 +29,10 @@ module test();
 	end
 
 	initial begin
-
-		#10 @(posedge clk) begin
+        #12 rst = 1;
+        #16 rst = 0;
+        
+		#20 @(posedge clk) begin
 		    read = 1;
 		    #(2*CLK_PRD) read = 0;
 		end
@@ -41,7 +43,7 @@ module test();
 		end
 
 
-		#30 begin 
+		#120 begin 
 			if (err) $display("Error encountered.");
 			else $display("No error detected.");
 			$finish; 
@@ -52,7 +54,7 @@ module test();
 		.a(a),
 		.b(b),
 		.clk(clk),
-		.rst(1'd1),
+		.rst(rst),
 		.read(read),
 		.result(result)
 	);

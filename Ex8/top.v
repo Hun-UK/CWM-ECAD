@@ -27,21 +27,41 @@ module axi_multiplier(clk, rst, a, b, read, result);
 	wire data_available, slave_ready;
 
 	//addr_stable = assert property(posedge clk) $stable(a));
+	
+	initial begin
+	   master_ready <= 1;
+	   addr_stable <= 1;
+	   addr <= 0;
+	   #4 begin
+	       master_ready <= 0;
+	       addr_stable <= 0;
+	   end
+	end
 
 	always @(posedge read) begin
-	    @ (posedge slave_ready) begin
-            addr = (a << 3) + b;
-            @ (addr) begin
-                addr_stable <= 1;
-                master_ready <= 1; 
-                if (data_available && slave_ready) begin
-                    result <= full_result[5:0];
-                    #1 begin
-                        master_ready <= 0; 
-                        addr_stable <= 0; 
-                    end
-                end
-            end
+		if (slave_ready) begin
+		    addr_stable <= 0;
+			addr <= {26'd0, a, b};
+			#1 addr_stable <= 1;
+			@(posedge clk) begin
+				master_ready <= 1; 
+				@(posedge data_available) begin
+				    result <= full_result[5:0];
+				    master_ready <= 0;
+				end
+				/*if (data_available) begin
+					result <= full_result[5:0];
+					#1 begin
+					    master_ready <= 0; 
+					end
+				end else $display("Data retrieval failed");*/
+				
+			end
+			
+			
+			
+			
+			@(posedge clk) master_ready <= 0;
 		end
 	end
 
@@ -51,7 +71,7 @@ module axi_multiplier(clk, rst, a, b, read, result);
 	  .rsta_busy(),          // output wire rsta_busy
 	  .rstb_busy(),          // output wire rstb_busy
 	  .s_aclk(clk),                // input wire s_aclk
-	  .s_aresetn(1'd1),          // input wire s_aresetn
+	  .s_aresetn(~rst),          // input wire s_aresetn
 	  .s_axi_awaddr(32'd0),    // input wire [31 : 0] s_axi_awaddr
 	  .s_axi_awvalid(1'd0),  // input wire s_axi_awvalid
 	  .s_axi_awready(),  // output wire s_axi_awready
