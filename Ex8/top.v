@@ -29,10 +29,12 @@ module axi_multiplier(clk, rst, a, b, read, result);
 	//addr_stable = assert property(posedge clk) $stable(a));
 	
 	initial begin
+	    @(posedge clk) begin
 		master_ready <= 1;
 		addr_stable <= 1;
 		addr <= 0;
-		#4 begin
+		end
+		@(posedge clk) begin
 			master_ready <= 0;
 			addr_stable <= 0;
 		end
@@ -41,15 +43,20 @@ module axi_multiplier(clk, rst, a, b, read, result);
 	always @(posedge read) begin
 		if (!slave_ready) @ (posedge slave_ready);
 		addr_stable <= 0;
-		addr <= {26'd0, a, b};
-		#1 addr_stable <= 1;
+		addr <= {24'd0, a, b, 2'd0};
+		#1 addr_stable <= 1; //SURELY NOT ROBUST
 		@(posedge clk) begin
 			master_ready <= 1; 
 			addr_stable <= 0;
-			@(posedge data_available) begin
+
+			//if (data_available) result = full_result[5:0]; //STILL RISING ON CLK EDGE
+			//result <= full_result[5:0]; ALSO  DOESN'T WORK
+			#1 if (data_available) result = full_result[5:0]; //SURELY THIS IS NOT ROBUST
+			@(posedge clk) master_ready <= 0;
+			/*@(posedge data_available) begin //TRIGGERS NEXT READ CYCLE
 				result <= full_result[5:0];
 			    	@(posedge clk) master_ready <= 0;
-			end
+			end*/
 				
             	end
 	end
