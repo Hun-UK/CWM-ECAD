@@ -38,10 +38,11 @@ module axi_multiplier(clk, rst, a, b, read, result);
 			result <= 0;
 
 		
-		end else begin
-			addr_stable <= #1 read && ~a_busy && ~b_busy && slave_ready;
+		end else begin #1
+			addr_stable <= read && (~a_busy) && (~b_busy) && slave_ready;
+			result <= (data_available) ? full_result[5:0] : result;
 			addr <= {24'd0, a, b, 2'd0};
-			result <= #1 (data_available) ? full_result[5:0] : result;
+			
 		end		
 	end
 

@@ -13,7 +13,7 @@
 module test();
 	//MAY NEED TO MOD
 	parameter CLK_PRD = 4;
-	
+
 	reg clk, rst, read, err, t;
 	reg [2:0] a, b, d;
 	wire [5:0] result; 
@@ -30,21 +30,23 @@ module test();
 		forever #(CLK_PRD/2) clk = ~clk;
 	end
 
-    always  @(posedge clk) begin
-            
-            err <= (result != a*b && d==3'd3)  ? 1 : err;
-            
-            a <= (d==3'd3) ? {$random} % 8 : a;
-            b <= (d==3'd3) ? {$random} % 8 : b;
-            read <= d[1];
-            
-            
-		
-            d[2:1]<=d[1:0];
-            d[0] <= d[2];
-            
-        
-    end
+	always  @(posedge clk) begin
+	    
+
+		if (d == 3'd3) begin
+			err <= (result != a*b)  ? 1 : err;
+
+			a <= {$random} % 8;
+			b <= {$random} % 8;
+		end
+
+		read <= d[1];
+
+		d[2:1]<=d[1:0];
+		d[0] <= d[2];
+	end
+
+	
     
 	initial begin
 		#400 begin 
